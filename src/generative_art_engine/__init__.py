@@ -1,10 +1,21 @@
 """Generative Art Engine."""
 
-__version__ = "0.1.0"
+from generative_art_engine.config import ArtConfig
+from generative_art_engine.engine.art_engine import ArtEngine
+
+__version__ = "0.2.0"
 
 
 def main() -> None:
-    """Run the Generative Art Engine."""
+    """Generate artwork using the default configuration."""
+
     print("🎨 Generative Art Engine")
     print(f"Version: {__version__}")
-    print("Status: Ready")
+
+    config = ArtConfig()
+
+    engine = ArtEngine(config)
+
+    output_path = engine.generate()
+
+    print(f"Artwork generated: {output_path}")

@@ -86,10 +86,15 @@ class ArtEngine:
             palette_name=self.config.palette,
         )
 
-        output_path = (
-            self.config.output_dir
-            / f"art_flow_field_{self.config.palette}_{self.config.seed}.png"
+        filename = (
+            f"art_flow_field_"
+            f"{self.config.palette}_"
+            f"s{self.config.seed}_"
+            f"p{self.config.particle_count}_"
+            f"n{self.config.particle_steps}.png"
         )
+
+        output_path = self.config.output_dir / filename
 
         output_path.parent.mkdir(
             parents=True,

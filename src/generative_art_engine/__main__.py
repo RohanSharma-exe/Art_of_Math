@@ -1,4 +1,4 @@
-from generative_art_engine import main
+from generative_art_engine.cli import main
 
 if __name__ == "__main__":
     main()

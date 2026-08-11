@@ -110,7 +110,7 @@ def main() -> None:
     )
 
     print("🎨 Generative Art Engine")
-    print("Version: 0.9.0")
+    print("Version: 1.0.0")
     print()
     print(f"Algorithm:  {args.algorithm}")
     print(f"Seed:       {config.seed}")
@@ -138,4 +138,7 @@ def main() -> None:
     else:
         output_path = engine.generate_random_walk_art()
 
+    metadata_path = output_path.with_suffix(".json")
+
     print(f"Artwork generated: {output_path}")
+    print(f"Metadata generated: {metadata_path}")

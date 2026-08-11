@@ -4,6 +4,10 @@ from PIL import Image
 
 from generative_art_engine.algorithms.random_walk import generate_random_walk
 from generative_art_engine.config import ArtConfig
+from generative_art_engine.metadata import (
+    GenerationMetadata,
+    save_metadata,
+)
 from generative_art_engine.rendering.canvas import Canvas
 from generative_art_engine.rendering.flow_renderer import (
     generate_flow_field_image,
@@ -44,6 +48,24 @@ class ArtEngine:
 
         canvas.save(output_path)
 
+        metadata = GenerationMetadata(
+            algorithm="random-walk",
+            seed=self.config.seed,
+            width=self.config.width,
+            height=self.config.height,
+            palette=None,
+            particle_count=None,
+            particle_steps=None,
+            particle_step_size=None,
+            flow_scale=None,
+            noise_scale=None,
+        )
+
+        save_metadata(
+            metadata,
+            output_path,
+        )
+
         return output_path
 
     def generate_noise_art(self) -> Path:
@@ -71,6 +93,24 @@ class ArtEngine:
         )
 
         image.save(output_path)
+
+        metadata = GenerationMetadata(
+            algorithm="noise",
+            seed=self.config.seed,
+            width=self.config.width,
+            height=self.config.height,
+            palette=None,
+            particle_count=None,
+            particle_steps=None,
+            particle_step_size=None,
+            flow_scale=None,
+            noise_scale=self.config.noise_scale,
+        )
+
+        save_metadata(
+            metadata,
+            output_path,
+        )
 
         return output_path
 
@@ -104,5 +144,23 @@ class ArtEngine:
         )
 
         image.save(output_path)
+
+        metadata = GenerationMetadata(
+            algorithm="flow-field",
+            seed=self.config.seed,
+            width=self.config.width,
+            height=self.config.height,
+            palette=self.config.palette,
+            particle_count=self.config.particle_count,
+            particle_steps=self.config.particle_steps,
+            particle_step_size=self.config.particle_step_size,
+            flow_scale=self.config.flow_scale,
+            noise_scale=None,
+        )
+
+        save_metadata(
+            metadata,
+            output_path,
+        )
 
         return output_path

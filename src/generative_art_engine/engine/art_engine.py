@@ -38,7 +38,9 @@ class ArtEngine:
             width=2,
         )
 
-        output_path = self.config.output_dir / f"art_random_walk_{self.config.seed}.png"
+        output_path = (
+            self.config.output_dir / f"art_random_walk_s{self.config.seed}.png"
+        )
 
         canvas.save(output_path)
 
@@ -61,7 +63,7 @@ class ArtEngine:
             Image.Resampling.BICUBIC,
         )
 
-        output_path = self.config.output_dir / f"art_noise_{self.config.seed}.png"
+        output_path = self.config.output_dir / f"art_noise_s{self.config.seed}.png"
 
         output_path.parent.mkdir(
             parents=True,

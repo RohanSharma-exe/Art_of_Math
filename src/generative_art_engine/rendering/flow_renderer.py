@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from generative_art_engine.algorithms.flow_field import FlowField
 from generative_art_engine.engine.particle import Particle
 from generative_art_engine.utils.colors import get_palette
+from generative_art_engine.utils.gradients import palette_color
 
 
 def generate_flow_field_image(
@@ -18,7 +19,7 @@ def generate_flow_field_image(
     noise_scale: float = 0.003,
     palette_name: str = "midnight",
 ) -> Image.Image:
-    """Generate colorful artwork from particles following a flow field."""
+    """Generate flow-field artwork with smooth color mapping."""
 
     rng = random.Random(seed)
 
@@ -66,14 +67,22 @@ def generate_flow_field_image(
 
             points.append(point)
 
-        if len(points) >= 2:
-            color = rng.choice(colors)
+        if len(points) < 2:
+            continue
 
-            draw.line(
-                points,
-                fill=(*color, 55),
-                width=1,
-            )
+        # Map the particle's starting position to the palette.
+        position = particle.x / max(width - 1, 1)
+
+        color = palette_color(
+            colors,
+            position,
+        )
+
+        draw.line(
+            points,
+            fill=(*color, 55),
+            width=1,
+        )
 
     return image
 

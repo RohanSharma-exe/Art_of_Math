@@ -5,6 +5,9 @@ from PIL import Image
 from generative_art_engine.algorithms.random_walk import generate_random_walk
 from generative_art_engine.config import ArtConfig
 from generative_art_engine.rendering.canvas import Canvas
+from generative_art_engine.rendering.flow_renderer import (
+    generate_flow_field_image,
+)
 from generative_art_engine.rendering.noise_renderer import generate_noise_image
 
 
@@ -59,6 +62,30 @@ class ArtEngine:
         )
 
         output_path = self.config.output_dir / f"art_noise_{self.config.seed}.png"
+
+        output_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        image.save(output_path)
+
+        return output_path
+
+    def generate_flow_field_art(self) -> Path:
+        """Generate particle-based flow-field artwork."""
+
+        image = generate_flow_field_image(
+            width=self.config.width,
+            height=self.config.height,
+            seed=self.config.seed,
+            particle_count=self.config.particle_count,
+            steps=self.config.particle_steps,
+            step_size=self.config.particle_step_size,
+            noise_scale=self.config.flow_scale,
+        )
+
+        output_path = self.config.output_dir / f"art_flow_field_{self.config.seed}.png"
 
         output_path.parent.mkdir(
             parents=True,

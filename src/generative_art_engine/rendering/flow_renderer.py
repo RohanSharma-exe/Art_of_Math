@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 
 from generative_art_engine.algorithms.flow_field import FlowField
 from generative_art_engine.engine.particle import Particle
+from generative_art_engine.utils.colors import get_palette
 
 
 def generate_flow_field_image(
@@ -15,15 +16,18 @@ def generate_flow_field_image(
     steps: int = 150,
     step_size: float = 3.0,
     noise_scale: float = 0.003,
+    palette_name: str = "midnight",
 ) -> Image.Image:
-    """Generate artwork from particles following a flow field."""
+    """Generate colorful artwork from particles following a flow field."""
 
     rng = random.Random(seed)
+
+    palette = get_palette(palette_name)
 
     image = Image.new(
         "RGBA",
         (width, height),
-        (5, 7, 12, 255),
+        (*palette.background, 255),
     )
 
     draw = ImageDraw.Draw(
@@ -35,6 +39,8 @@ def generate_flow_field_image(
         seed=seed,
         scale=noise_scale,
     )
+
+    colors = palette.colors
 
     for _ in range(particle_count):
         particle = Particle(
@@ -61,9 +67,11 @@ def generate_flow_field_image(
             points.append(point)
 
         if len(points) >= 2:
+            color = rng.choice(colors)
+
             draw.line(
                 points,
-                fill=(220, 235, 255, 45),
+                fill=(*color, 55),
                 width=1,
             )
 
@@ -79,6 +87,7 @@ def save_flow_field_image(
     steps: int = 150,
     step_size: float = 3.0,
     noise_scale: float = 0.003,
+    palette_name: str = "midnight",
 ) -> None:
     """Generate and save flow-field artwork."""
 
@@ -90,6 +99,7 @@ def save_flow_field_image(
         steps=steps,
         step_size=step_size,
         noise_scale=noise_scale,
+        palette_name=palette_name,
     )
 
     output_path.parent.mkdir(

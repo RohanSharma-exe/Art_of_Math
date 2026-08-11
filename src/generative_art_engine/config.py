@@ -20,3 +20,5 @@ class ArtConfig:
     particle_step_size: float = 3.0
 
     flow_scale: float = 0.003
+
+    palette: str = "midnight"

@@ -73,7 +73,7 @@ class ArtEngine:
         return output_path
 
     def generate_flow_field_art(self) -> Path:
-        """Generate particle-based flow-field artwork."""
+        """Generate colorful particle-based flow-field artwork."""
 
         image = generate_flow_field_image(
             width=self.config.width,
@@ -83,9 +83,13 @@ class ArtEngine:
             steps=self.config.particle_steps,
             step_size=self.config.particle_step_size,
             noise_scale=self.config.flow_scale,
+            palette_name=self.config.palette,
         )
 
-        output_path = self.config.output_dir / f"art_flow_field_{self.config.seed}.png"
+        output_path = (
+            self.config.output_dir
+            / f"art_flow_field_{self.config.palette}_{self.config.seed}.png"
+        )
 
         output_path.parent.mkdir(
             parents=True,
